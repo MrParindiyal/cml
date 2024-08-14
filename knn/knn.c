@@ -2,27 +2,43 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_PATH_LENGTH 260;
+// TODO
+#define MAX_PATH_LENGTH 260
 typedef char* string;
 
 
 string get_path(){
-    char path[5000];
+    string path = malloc(sizeof(char) * 5000);
+    if (path == NULL) {  // Check if malloc failed
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
     printf("Enter path: ");
-    if (fgets(path, sizeof(path), stdin)){
+    if (fgets(path, MAX_PATH_LENGTH, stdin)){
         // Remove newline character if present
         size_t len = strlen(path);
         if (len > 0 && path[len - 1] == '\n') {
             path[len - 1] = '\0';
         }
     }
+    else {
+        printf("Error reading input\n");
+        free(path);  
+        return NULL;
+    }
 
     printf("You entered: %s\n", path);
-    return *path;
+    return path;
 }
 
-int main(){
+// TODO
 
-    get_path();
+
+
+int main(){
+    string path = get_path();
+    if (path != NULL){
+        free(path);
+    }
     return 0;
 }
