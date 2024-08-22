@@ -42,7 +42,7 @@ df* read_csv(void)
 {
     char separators[] = ",\n";
     string token;
-    df* dataframe;
+    // df* dataframe = NULL;
     FILE*fiter = fopen("test.csv", "r");
 
     if (fiter != NULL){
@@ -74,6 +74,7 @@ df* read_csv(void)
             }
             q++;
         }
+        return dataframe;    
     }
 
 
@@ -83,7 +84,7 @@ df* read_csv(void)
     }
 
     fclose(fiter);
-    return dataframe;    
+    return NULL;
 }
 
 void print_df(df* dataframe, int rows){
