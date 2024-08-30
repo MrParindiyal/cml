@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,20 +14,27 @@ typedef struct{
     float x;
     float y;
     int class;
+    float dis;
 } df;
 
 string get_path();
 df* read_csv();
-void print_df(df* dataframe, int r);
+void print_df(df*, int);
+void print_df_full(df*);
 float* get_point();
+float get_euclidean_distance(float, float, float, float);
+df* calculate_dist(df* , float, float);
 
 int main(){
     df* data = read_csv();
     printf("\n+++++++++++++++++\n");\
-    print_df(data, 15);
+    // print_df_full(data);
+    print_df(data,10);
 
     float* user_input = get_point();
     printf("\nYour input was : x = %f, y = %f\n", user_input[0], user_input[1]);
+    data = calculate_dist(data, user_input[0], user_input[1]);
+    print_df_full(data);
     free(data);
     free(user_input);
     return 0;
@@ -87,7 +95,10 @@ df* read_csv(void)
                 dataframe[q].class = strtol(token, NULL, 10);
                 // printf( " %s\n", token );
                 
+                dataframe[q].dis = 0;
+
                 token = strtok( NULL, separators);
+
             }
             q++;
         }
@@ -108,7 +119,21 @@ void print_df(df* dataframe, int rows){
         printf("%f ", dataframe[i].x);
         printf("%f ", dataframe[i].y);
         printf("%i ", dataframe[i].class);
+        printf("%0.2f ", dataframe[i].dis);
         printf("\n");
+    }
+}
+
+void print_df_full(df* dataframe){
+    int i = 0;
+    while(i < MAX_ROWS && dataframe[i].row_name != NULL){
+        printf("%s ", dataframe[i].row_name);
+        printf("%f ", dataframe[i].x);
+        printf("%f ", dataframe[i].y);
+        printf("%i ", dataframe[i].class);
+        printf("%0.2f ", dataframe[i].dis);
+        printf("\n");
+        i++;
     }
 }
 
@@ -126,4 +151,19 @@ float* get_point(){
         exit(EXIT_FAILURE);
     }
     return out;
+}
+
+float get_euclidean_distance(float x1, float y1, float x, float y){
+    // same as float dist = sqrt(pow(x1-x, 2) + pow(y1-y, 2));
+    float dist = sqrt(((x1 - x) * (x1 - x)) + ((y1 - y) * (y1 - y)));
+    return dist;
+}
+
+df* calculate_dist(df* dataframe, float x, float y){
+    int i = 0;
+    while( i < MAX_ROWS && dataframe[i].row_name != NULL){
+        dataframe[i].dis = get_euclidean_distance(dataframe[i].x, dataframe[i].y, x, y);
+        i++;
+    }
+    return dataframe;
 }

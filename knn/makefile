@@ -12,7 +12,7 @@ CFLAGS = -ferror-limit=2 -gdwarf-4 -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wn
 	@echo "compiling: $< --> $*.o"
 	@$(CC) $(CFLAGS) -c $< -o $*.o
 	@echo "linking: $*.o --> $*"
-	@$(CC) $(CFLAGS) $*.o -o $*
+	@$(CC) $(CFLAGS) $*.o -o $* -lm
 	@echo "DONE"
 
 # Handle invalid arguments
