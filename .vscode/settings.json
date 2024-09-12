@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "math.h": "c",
+        "string.h": "c",
+        "libc-header-start.h": "c",
+        "*.tcc": "c",
+        "cmath": "c",
+        "random": "c"
+    }
+}
