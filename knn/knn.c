@@ -19,11 +19,15 @@ typedef struct{
 
 string get_path();
 df* read_csv();
+int get_df_len(df*);
 void print_df(df*, int);
 void print_df_full(df*);
 float* get_point();
 float get_euclidean_distance(float, float, float, float);
 df* calculate_dist(df* , float, float);
+void swap_struct(df*, df*);
+df* sort_df(df*);
+void quick_sort(df*, int, int);
 
 int main(){
     df* data = read_csv();
@@ -34,6 +38,7 @@ int main(){
     float* user_input = get_point();
     printf("\nYour input was : x = %f, y = %f\n", user_input[0], user_input[1]);
     data = calculate_dist(data, user_input[0], user_input[1]);
+    data = sort_df(data);
     print_df_full(data);
     free(data);
     free(user_input);
@@ -64,8 +69,7 @@ string get_path(){
     return path;
 }
 
-df* read_csv(void)
-{
+df* read_csv(void){
     char separators[] = ",\n";
     string token;
     // df* dataframe = NULL;
@@ -154,7 +158,7 @@ float* get_point(){
 }
 
 float get_euclidean_distance(float x1, float y1, float x, float y){
-    // same as float dist = sqrt(pow(x1-x, 2) + pow(y1-y, 2));
+    // same as float dist = sqrt(pow(x1 - x, 2) + pow(y1 - y, 2));
     float dist = sqrt(((x1 - x) * (x1 - x)) + ((y1 - y) * (y1 - y)));
     return dist;
 }
@@ -166,4 +170,48 @@ df* calculate_dist(df* dataframe, float x, float y){
         i++;
     }
     return dataframe;
+}
+
+df* sort_df(df* dataframe){
+    int len = get_df_len(dataframe);
+    quick_sort(dataframe, 0, len - 1);
+    return dataframe;
+}
+
+void quick_sort(df* dataframe, int lb, int ub){
+    if (lb < ub)
+    {
+        df pivot = dataframe[ub];
+        int i = lb - 1;
+        for (int j = lb; j <= ub; j++)
+        {
+            if (dataframe[j].dis < pivot.dis)
+            {
+                i++;
+                // if i!=j then swap
+                (i != j) ? swap_struct(&dataframe[j], &dataframe[i]) : 0;
+            }
+        }
+        // at last, swap pivot to its location
+        swap_struct(&dataframe[ub], &dataframe[++i]);
+
+        // then recursive calls to left & right subarray
+        quick_sort(dataframe, lb, i - 1);
+        quick_sort(dataframe, i + 1, ub);
+    }
+}
+
+void swap_struct(df* a, df* b){
+    df temp = *a;
+    *a = *b;
+    *b = temp;
+    return;
+}
+
+int get_df_len(df* dataframe){
+    int len = 0;
+    while(len < MAX_ROWS && dataframe[len].row_name != NULL){
+        len++;
+    }
+    return len;
 }
