@@ -125,10 +125,10 @@ gcc handle_csv.o knn_calc.o knn.o -o knn -lm
 
 <hr>
 
-- You can also visualize the existing points in `test.csv` by opening `/knn/knn.ipynb` file.
+- You can also visualize the existing points in `test.csv` by opening `/knn/notebook.zip` file.
 		- If you are using VS Code, you can also open `knn.ipynb` through terminal:
 ```bash
-code knn.ipynb
+unzip knn/notebook.zip
 ```
 - This notebook can be modified to visualize your custom csv files also.
 
