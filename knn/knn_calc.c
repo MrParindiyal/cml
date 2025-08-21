@@ -1,7 +1,8 @@
 #include "knn_calc.h"
 #include "handle_csv.h"
-#include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MAX_ROWS 5000
 
@@ -13,7 +14,7 @@ float get_euclidean_distance(float x1, float y1, float x, float y){
 
 df* calculate_dist(df* dataframe, float x, float y){
     int i = 0;
-    while( i < MAX_ROWS && dataframe[i].row_name != NULL){
+    while (i < MAX_ROWS && dataframe[i].row_name != NULL){
         dataframe[i].dis = get_euclidean_distance(dataframe[i].x, dataframe[i].y, x, y);
         i++;
     }
@@ -54,4 +55,28 @@ void quick_sort(df* dataframe, int lb, int ub){
         quick_sort(dataframe, lb, i - 1);
         quick_sort(dataframe, i + 1, ub);
     }
+}
+
+int get_k_val()
+{
+    int kval;
+    printf("\nEnter the k val for knn:\t");
+    if (scanf("%i", &kval) != 1)
+    {
+        printf("\nInvalid input, retry...\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return kval;
+}
+
+void print_predicted_class(df *dataframe, int k)
+{
+    float label_sum = 0;
+    for (int i = 0; i < k; i++)
+    {
+        label_sum += dataframe[i].label;
+    }
+
+    printf("\nPredicted label/class for your point is : %i\n", (int) round(label_sum / k));
 }
