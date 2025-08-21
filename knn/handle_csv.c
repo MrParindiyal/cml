@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define MAX_PATH_LENGTH 260
 #define MAX_ROWS 5000
 
@@ -23,7 +22,7 @@ string get_path(){
     }
     else {
         printf("Error reading input\n");
-        free(path);  
+        free(path);
         return NULL;
     }
 
@@ -35,7 +34,7 @@ df* read_csv(void){
     char separators[] = ",\n";
     string token;
     // df* dataframe = NULL;
-    FILE*fiter = fopen("test.csv", "r");
+    FILE *fiter = fopen("test.csv", "r");
 
     if (fiter != NULL){
         printf("File open success\n\n");
@@ -44,32 +43,28 @@ df* read_csv(void){
         int q = 0;
         while (fgets(buffer, sizeof(buffer), fiter) != NULL) {
             token = strtok(buffer, separators);
-            while( token != NULL )
-            {// While there are tokens in "buffer"                 
+            while(token != NULL)
+            {// While there are tokens in "buffer"
                 dataframe[q].row_name = malloc(strlen(token) + 1);
                 strcpy(dataframe[q].row_name, token);
 
-                token = strtok( NULL, separators);
+                token = strtok(NULL, separators);
                 dataframe[q].x = strtof(token, NULL);
-                // printf( " %s\n", token );
-                
-                token = strtok( NULL, separators);
+
+                token = strtok(NULL, separators);
                 dataframe[q].y = strtof(token, NULL);
-                // printf( " %s\n", token );
-                
-                token = strtok( NULL, separators);
+
+                token = strtok(NULL, separators);
                 dataframe[q].label = strtol(token, NULL, 10);
-                // printf( " %s\n", token );
-                
+
                 dataframe[q].dis = 0;
 
-                token = strtok( NULL, separators);
-
+                token = strtok(NULL, separators);
             }
             q++;
         }
         fclose(fiter);
-        return dataframe;    
+        return dataframe;
     }
 
     else{
@@ -92,7 +87,7 @@ void print_df(df* dataframe, int rows){
 
 void print_df_full(df* dataframe){
     int i = 0;
-    while(i < MAX_ROWS && dataframe[i].row_name != NULL){
+    while (i < MAX_ROWS && dataframe[i].row_name != NULL){
         printf("%s ", dataframe[i].row_name);
         printf("%f ", dataframe[i].x);
         printf("%f ", dataframe[i].y);
@@ -105,7 +100,7 @@ void print_df_full(df* dataframe){
 
 int get_df_len(df* dataframe){
     int len = 0;
-    while(len < MAX_ROWS && dataframe[len].row_name != NULL){
+    while (len < MAX_ROWS && dataframe[len].row_name != NULL){
         len++;
     }
     return len;
@@ -114,13 +109,13 @@ int get_df_len(df* dataframe){
 float* get_point(){
     float* out = malloc(2 * sizeof(float));
     printf("\nEnter the x val of your data:\t");
-    if(scanf("%f", &out[0]) != 1){
+    if (scanf("%f", &out[0]) != 1){
         printf("\nInvalid input, retry...\n");
         exit(EXIT_FAILURE);
     }
 
     printf("\nEnter the y val of your data:\t");
-    if(scanf("%f", &out[1]) != 1){
+    if (scanf("%f", &out[1]) != 1){
         printf("\nInvalid input, retry...\n");
         exit(EXIT_FAILURE);
     }
